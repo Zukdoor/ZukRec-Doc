@@ -5,6 +5,7 @@
   "author": "Zukdoor Inc.",
   "license": "MIT",
   "devDependencies": {
+    "now": "^12.1.12",
     "spectacle-docs": "^1.0.6"
   },
   "scripts": {
