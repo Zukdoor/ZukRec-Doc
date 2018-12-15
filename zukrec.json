@@ -15,14 +15,6 @@
         {
             "name": "rtmp-controller",
             "description": "推流相关接口"
-        },
-        {
-            "name": "user-controller",
-            "description": "用户接口"
-        },
-        {
-            "name": "video-record-controller",
-            "description": "video相关接口"
         }
     ],
     "paths": {
@@ -31,7 +23,7 @@
                 "tags": [
                     "record-controller"
                 ],
-                "summary": "开始录制，返回值为display，如果想对同一面板进行推流，可在推流接口传入此display",
+                "summary": "开始录制，返回值为display，如果想对同一面板进行推流，可在推流接口传入此display.回调的url形式上为 backUrl?message=message&requestId=requestId.其中message有三种，record_success，record_failed，record_stopped",
                 "operationId": "startUsingGET",
                 "produces": [
                     "*/*"
@@ -73,6 +65,20 @@
                         "required": false,
                         "type": "integer",
                         "format": "int32"
+                    },
+                    {
+                        "name": "requestId",
+                        "in": "query",
+                        "description": "唯一表识,在回调中返回，表示来自某一录制任务",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "backUrl",
+                        "in": "query",
+                        "description": "回调地址，参数暂定为(String,String). <br>第一个参数为录制状态.分为开启录制成功，开启录制失败，录制结束，第二个参数为唯一表识，在调用开始录制接口时传入",
+                        "required": false,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -97,7 +103,7 @@
                 "tags": [
                     "record-controller"
                 ],
-                "summary": "停止录制，返回本次录制的相关信息，具体见返回描述",
+                "summary": "停止录制，返回本次录制的相关信息，具体见返回描述.回调的url形式上为 backUrl?message=video_upload_failed&requestId=requestId&s3Url=s3Url.其中message有两种，video_upload_success，video_upload_failed",
                 "operationId": "stopUsingPOST",
                 "consumes": [
                     "application/json"
@@ -113,6 +119,20 @@
                         "required": false,
                         "type": "integer",
                         "format": "int32"
+                    },
+                    {
+                        "name": "requestId",
+                        "in": "query",
+                        "description": "唯一表识,在回调中返回，表示来自某一录制任务",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "backUrl",
+                        "in": "query",
+                        "description": "回调地址，参数暂定为(String,String,String). <br>第一个参数为video上传状态，分为上传成功，上传失败.<br>第二个参数为唯一表识，在调用开始录制接口时传入.<br>第三个参数为上传s3的url",
+                        "required": false,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -181,7 +201,7 @@
                 "tags": [
                     "rtmp-controller"
                 ],
-                "summary": "推流，返回值为display，如果想对同一面板进行录制，可在录制接口传入此display",
+                "summary": "推流，返回值为display，如果想对同一面板进行录制，可在录制接口传入此display.回调的url形式上为 backUrl?message=message&requestId=requestId.其中message有三种，push_success，push_failed，push_stopped",
                 "operationId": "pushStreamUsingGET",
                 "produces": [
                     "*/*"
@@ -216,6 +236,20 @@
                         "required": false,
                         "type": "integer",
                         "format": "int32"
+                    },
+                    {
+                        "name": "requestId",
+                        "in": "query",
+                        "description": "唯一表识,在回调中返回，表示来自某一推流任务",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "backUrl",
+                        "in": "query",
+                        "description": "回调地址，参数暂定为(String,String).<br>第一个参数为推流状态，分为推流成功，推流失败，推流结束.<br>第二个参数为唯一表识，在调用开始推流接口时传入",
+                        "required": false,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -286,156 +320,9 @@
                     }
                 }
             }
-        },
-        "/api/v1/user": {
-            "post": {
-                "tags": [
-                    "user-controller"
-                ],
-                "summary": "登陆",
-                "operationId": "loginUsingPOST",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "*/*"
-                ],
-                "parameters": [
-                    {
-                        "name": "username",
-                        "in": "query",
-                        "description": "用户名",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "password",
-                        "in": "query",
-                        "description": "密码",
-                        "required": false,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/BaseResponse«string»"
-                        }
-                    },
-                    "201": {
-                        "description": "Created"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "user-controller"
-                ],
-                "summary": "登出",
-                "operationId": "logoutUsingDELETE",
-                "produces": [
-                    "*/*"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/BaseResponse«boolean»"
-                        }
-                    },
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                }
-            }
-        },
-        "/api/v1/video": {
-            "get": {
-                "tags": [
-                    "video-record-controller"
-                ],
-                "summary": "综合查询，recordName可为空，为空默认查询该用户下所有",
-                "operationId": "getVideoRecordsUsingGET",
-                "produces": [
-                    "*/*"
-                ],
-                "parameters": [
-                    {
-                        "name": "recordName",
-                        "in": "query",
-                        "description": "视频名",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "currentPage",
-                        "in": "query",
-                        "description": "当前页",
-                        "required": false,
-                        "type": "integer",
-                        "format": "int32"
-                    },
-                    {
-                        "name": "pageSize",
-                        "in": "query",
-                        "description": "页条数",
-                        "required": false,
-                        "type": "integer",
-                        "format": "int32"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/BaseResponse«Page«record记录»»"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    },
-                    "404": {
-                        "description": "Not Found"
-                    }
-                }
-            }
         }
     },
     "definitions": {
-        "BaseResponse«Page«record记录»»": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "string"
-                },
-                "data": {
-                    "$ref": "#/definitions/Page«record记录»"
-                },
-                "message": {
-                    "type": "string"
-                }
-            },
-            "title": "BaseResponse«Page«record记录»»"
-        },
         "BaseResponse«boolean»": {
             "type": "object",
             "properties": {
@@ -482,21 +369,6 @@
             },
             "title": "BaseResponse«record记录»"
         },
-        "BaseResponse«string»": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "string"
-                },
-                "data": {
-                    "type": "string"
-                },
-                "message": {
-                    "type": "string"
-                }
-            },
-            "title": "BaseResponse«string»"
-        },
         "BaseResponse«实时录制信息»": {
             "type": "object",
             "properties": {
@@ -512,63 +384,9 @@
             },
             "title": "BaseResponse«实时录制信息»"
         },
-        "Page«record记录»": {
-            "type": "object",
-            "properties": {
-                "content": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/record记录"
-                    }
-                },
-                "currentPage": {
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "firstPage": {
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "lastPage": {
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "nextPage": {
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "pageSize": {
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "pageTotal": {
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "previousPage": {
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "recordTotal": {
-                    "type": "integer",
-                    "format": "int32"
-                }
-            },
-            "title": "Page«record记录»"
-        },
         "record记录": {
             "type": "object",
             "properties": {
-                "createTime": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "downloadTimes": {
-                    "type": "integer",
-                    "format": "int32",
-                    "description": "视频下载次数",
-                    "allowEmptyValue": false
-                },
                 "errorTimes": {
                     "type": "integer",
                     "format": "int32",
