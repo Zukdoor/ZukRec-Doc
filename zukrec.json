@@ -1,0 +1,640 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "ZukRec的RESTFul接口文档<br>说明: 调用方式及参数在相关接口中有详细描述！<br>",
+        "version": "1.0",
+        "title": "ZukRec"
+    },
+    "host": "rec.zukdoor.cloud",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "record-controller",
+            "description": "record控制接口"
+        },
+        {
+            "name": "rtmp-controller",
+            "description": "推流相关接口"
+        },
+        {
+            "name": "user-controller",
+            "description": "用户接口"
+        },
+        {
+            "name": "video-record-controller",
+            "description": "video相关接口"
+        }
+    ],
+    "paths": {
+        "/api/v1/record": {
+            "get": {
+                "tags": [
+                    "record-controller"
+                ],
+                "summary": "开始录制，返回值为display，如果想对同一面板进行推流，可在推流接口传入此display",
+                "operationId": "startUsingGET",
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "display",
+                        "in": "query",
+                        "description": "面板id（不指定特定面板时，需传入-1）",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "url",
+                        "in": "query",
+                        "description": "页面链接（准备录制的页面url）",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "recordName",
+                        "in": "query",
+                        "description": "视频描述",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "format",
+                        "in": "query",
+                        "description": "视频格式（目前只支持mkv）",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "hasAudio",
+                        "in": "query",
+                        "description": "是否有声音",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/BaseResponse«int»"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "record-controller"
+                ],
+                "summary": "停止录制，返回本次录制的相关信息，具体见返回描述",
+                "operationId": "stopUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "display",
+                        "in": "query",
+                        "description": "面板id",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/BaseResponse«record记录»"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/v1/record/info": {
+            "get": {
+                "tags": [
+                    "record-controller"
+                ],
+                "summary": "获取录制信息，若出现错误通过此接口发现",
+                "operationId": "getRecordInfoUsingGET",
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "display",
+                        "in": "query",
+                        "description": "面板id",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/BaseResponse«实时录制信息»"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/v1/rtmp": {
+            "get": {
+                "tags": [
+                    "rtmp-controller"
+                ],
+                "summary": "推流，返回值为display，如果想对同一面板进行录制，可在录制接口传入此display",
+                "operationId": "pushStreamUsingGET",
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "display",
+                        "in": "query",
+                        "description": "面板id（不指定特定面板时，需传入-1）",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "url",
+                        "in": "query",
+                        "description": "页面链接（准备录制的页面url）",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "rtmpUrl",
+                        "in": "query",
+                        "description": "推流地址，同一面板可推向多个地址",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "hasAudio",
+                        "in": "query",
+                        "description": "是否有声音",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/BaseResponse«int»"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "rtmp-controller"
+                ],
+                "summary": "停止推流",
+                "operationId": "stopStreamUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "display",
+                        "in": "query",
+                        "description": "display",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "rtmpUrl",
+                        "in": "query",
+                        "description": "rtmpUrl",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/BaseResponse«boolean»"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/v1/user": {
+            "post": {
+                "tags": [
+                    "user-controller"
+                ],
+                "summary": "登陆",
+                "operationId": "loginUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "query",
+                        "description": "用户名",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "密码",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/BaseResponse«string»"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "user-controller"
+                ],
+                "summary": "登出",
+                "operationId": "logoutUsingDELETE",
+                "produces": [
+                    "*/*"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/BaseResponse«boolean»"
+                        }
+                    },
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/api/v1/video": {
+            "get": {
+                "tags": [
+                    "video-record-controller"
+                ],
+                "summary": "综合查询，recordName可为空，为空默认查询该用户下所有",
+                "operationId": "getVideoRecordsUsingGET",
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "recordName",
+                        "in": "query",
+                        "description": "视频名",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "currentPage",
+                        "in": "query",
+                        "description": "当前页",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "description": "页条数",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/BaseResponse«Page«record记录»»"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "BaseResponse«Page«record记录»»": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "data": {
+                    "$ref": "#/definitions/Page«record记录»"
+                },
+                "message": {
+                    "type": "string"
+                }
+            },
+            "title": "BaseResponse«Page«record记录»»"
+        },
+        "BaseResponse«boolean»": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                }
+            },
+            "title": "BaseResponse«boolean»"
+        },
+        "BaseResponse«int»": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                }
+            },
+            "title": "BaseResponse«int»"
+        },
+        "BaseResponse«record记录»": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "data": {
+                    "$ref": "#/definitions/record记录"
+                },
+                "message": {
+                    "type": "string"
+                }
+            },
+            "title": "BaseResponse«record记录»"
+        },
+        "BaseResponse«string»": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            },
+            "title": "BaseResponse«string»"
+        },
+        "BaseResponse«实时录制信息»": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "data": {
+                    "$ref": "#/definitions/实时录制信息"
+                },
+                "message": {
+                    "type": "string"
+                }
+            },
+            "title": "BaseResponse«实时录制信息»"
+        },
+        "Page«record记录»": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/record记录"
+                    }
+                },
+                "currentPage": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "firstPage": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "lastPage": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "nextPage": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "pageSize": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "pageTotal": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "previousPage": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "recordTotal": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            },
+            "title": "Page«record记录»"
+        },
+        "record记录": {
+            "type": "object",
+            "properties": {
+                "createTime": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "downloadTimes": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "视频下载次数",
+                    "allowEmptyValue": false
+                },
+                "errorTimes": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "视频录制错误次数",
+                    "allowEmptyValue": false
+                },
+                "memSize": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "视频内存大小",
+                    "allowEmptyValue": false
+                },
+                "name": {
+                    "type": "string",
+                    "description": "视频名",
+                    "allowEmptyValue": false
+                },
+                "timeSize": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "视频时间长度",
+                    "allowEmptyValue": false
+                },
+                "url": {
+                    "type": "string",
+                    "description": "视频url",
+                    "allowEmptyValue": false
+                }
+            },
+            "title": "record记录"
+        },
+        "实时录制信息": {
+            "type": "object",
+            "properties": {
+                "errorTimes": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "视频录制错误次数",
+                    "allowEmptyValue": false
+                },
+                "fps": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "视频FPS",
+                    "allowEmptyValue": false
+                },
+                "memSize": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "视频内存大小",
+                    "allowEmptyValue": false
+                },
+                "status": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "是否出错，0正常，1发生错误",
+                    "allowEmptyValue": false
+                },
+                "timeSize": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "视频时间长度",
+                    "allowEmptyValue": false
+                }
+            },
+            "title": "实时录制信息"
+        }
+    }
+}

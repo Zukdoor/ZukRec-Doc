@@ -1,0 +1,13 @@
+{
+  "name": "ZukRec-Doc",
+  "version": "0.1.0",
+  "repository": "git@github.com:Zukdoor/ZukRec-Doc.git",
+  "author": "Zukdoor Inc.",
+  "license": "MIT",
+  "devDependencies": {
+    "spectacle-docs": "^1.0.6"
+  },
+  "scripts": {
+    "build": "spectacle zukrec.json -t doc"
+  }
+}
