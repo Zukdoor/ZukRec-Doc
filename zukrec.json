@@ -23,7 +23,7 @@
                 "tags": [
                     "record-controller"
                 ],
-                "summary": "开始录制，返回值为display，如果想对同一面板进行推流，可在推流接口传入此display.回调的url形式上为 backUrl?message=message&requestId=requestId.其中message有三种，record_success，record_failed，record_stopped",
+                "summary": "开始录制，返回值为display，如果想对同一面板进行推流，可在推流接口传入此display.回调的url形式上为 callback?message=message.其中message有三种，record_success，record_failed，record_stopped",
                 "operationId": "startUsingGET",
                 "produces": [
                     "*/*"
@@ -67,16 +67,9 @@
                         "format": "int32"
                     },
                     {
-                        "name": "requestId",
+                        "name": "callback",
                         "in": "query",
-                        "description": "唯一表识,在回调中返回，表示来自某一录制任务",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "backUrl",
-                        "in": "query",
-                        "description": "回调地址，参数暂定为(String,String). <br>第一个参数为录制状态.分为开启录制成功，开启录制失败，录制结束，第二个参数为唯一表识，在调用开始录制接口时传入",
+                        "description": "回调地址，参数包括message：录制状态.分为开启录制成功，开启录制失败，录制结束",
                         "required": false,
                         "type": "string"
                     }
@@ -103,7 +96,7 @@
                 "tags": [
                     "record-controller"
                 ],
-                "summary": "停止录制，返回本次录制的相关信息，具体见返回描述.回调的url形式上为 backUrl?message=video_upload_failed&requestId=requestId&s3Url=s3Url.其中message有两种，video_upload_success，video_upload_failed",
+                "summary": "停止录制，返回本次录制的相关信息，具体见返回描述.回调的url形式上为 callback?message=video_upload_failed&data=s3Url.其中message有两种，video_upload_success，video_upload_failed",
                 "operationId": "stopUsingPOST",
                 "consumes": [
                     "application/json"
@@ -121,16 +114,9 @@
                         "format": "int32"
                     },
                     {
-                        "name": "requestId",
+                        "name": "callback",
                         "in": "query",
-                        "description": "唯一表识,在回调中返回，表示来自某一录制任务",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "backUrl",
-                        "in": "query",
-                        "description": "回调地址，参数暂定为(String,String,String). <br>第一个参数为video上传状态，分为上传成功，上传失败.<br>第二个参数为唯一表识，在调用开始录制接口时传入.<br>第三个参数为上传s3的url",
+                        "description": "回调地址，参数包括message：录制状态.分为上传成功，上传失败；data：录像文件在s3上的url",
                         "required": false,
                         "type": "string"
                     }
@@ -201,7 +187,7 @@
                 "tags": [
                     "rtmp-controller"
                 ],
-                "summary": "推流，返回值为display，如果想对同一面板进行录制，可在录制接口传入此display.回调的url形式上为 backUrl?message=message&requestId=requestId.其中message有三种，push_success，push_failed，push_stopped",
+                "summary": "推流，返回值为display，如果想对同一面板进行录制，可在录制接口传入此display.回调的url形式上为 callback?message=message&data=rtmpUrl.其中message有三种，push_success，push_failed，push_stopped",
                 "operationId": "pushStreamUsingGET",
                 "produces": [
                     "*/*"
@@ -238,16 +224,9 @@
                         "format": "int32"
                     },
                     {
-                        "name": "requestId",
+                        "name": "callback",
                         "in": "query",
-                        "description": "唯一表识,在回调中返回，表示来自某一推流任务",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "backUrl",
-                        "in": "query",
-                        "description": "回调地址，参数暂定为(String,String).<br>第一个参数为推流状态，分为推流成功，推流失败，推流结束.<br>第二个参数为唯一表识，在调用开始推流接口时传入",
+                        "description": "回调地址，参数包括message：推流状态，分为推流成功，推流失败，推流结束；data：该状态对应的推流地址",
                         "required": false,
                         "type": "string"
                     }
