@@ -18,8 +18,8 @@
         }
     ],
     "paths": {
-        "/api/v1/record": {
-            "get": {
+        "/api/v1/record/start": {
+            "post": {
                 "tags": [
                     "record-controller"
                 ],
@@ -91,7 +91,9 @@
                         "description": "Not Found"
                     }
                 }
-            },
+            }
+        },
+        "/api/v1/record/stop": {
             "post": {
                 "tags": [
                     "record-controller"
@@ -182,7 +184,7 @@
                 }
             }
         },
-        "/api/v1/rtmp": {
+        "/api/v1/rtmp/start": {
             "get": {
                 "tags": [
                     "rtmp-controller"
@@ -248,7 +250,9 @@
                         "description": "Not Found"
                     }
                 }
-            },
+            }
+        },
+        "/api/v1/rtmp/stop": {
             "post": {
                 "tags": [
                     "rtmp-controller"
