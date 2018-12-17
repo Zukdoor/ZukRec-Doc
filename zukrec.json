@@ -23,7 +23,7 @@
                 "tags": [
                     "record-controller"
                 ],
-                "summary": "开始录制，返回值为display，如果想对同一面板进行推流，可在推流接口传入此display.回调的url形式上为 callback?message=message.其中message有三种，record_success，record_failed，record_stopped",
+                "summary": "开始录制，返回值为display，如果想对同一面板进行推流，可在推流接口传入此display.回调的url形式上为 callback?display=display&message=message.其中message有三种，record_success，record_failed，record_stopped",
                 "operationId": "startUsingGET",
                 "produces": [
                     "*/*"
@@ -98,7 +98,7 @@
                 "tags": [
                     "record-controller"
                 ],
-                "summary": "停止录制，返回本次录制的相关信息，具体见返回描述.回调的url形式上为 callback?message=video_upload_failed&data=s3Url.其中message有两种，video_upload_success，video_upload_failed",
+                "summary": "停止录制，返回本次录制的相关信息，具体见返回描述.回调的url形式上为 callback?display=display&message=video_upload_failed&data=s3Url.其中message有两种，video_upload_success，video_upload_failed",
                 "operationId": "stopUsingPOST",
                 "consumes": [
                     "application/json"
@@ -189,7 +189,7 @@
                 "tags": [
                     "rtmp-controller"
                 ],
-                "summary": "推流，返回值为display，如果想对同一面板进行录制，可在录制接口传入此display.回调的url形式上为 callback?message=message&data=rtmpUrl.其中message有三种，push_success，push_failed，push_stopped",
+                "summary": "推流，返回值为display，如果想对同一面板进行录制，可在录制接口传入此display.回调的url形式上为 callback?display=display&message=message&data=rtmpUrl.其中message有三种，push_success，push_failed，push_stopped",
                 "operationId": "pushStreamUsingGET",
                 "produces": [
                     "*/*"
