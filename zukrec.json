@@ -185,7 +185,7 @@
             }
         },
         "/api/v1/rtmp/start": {
-            "get": {
+            "post": {
                 "tags": [
                     "rtmp-controller"
                 ],
