@@ -10,7 +10,7 @@
   "routes": [
     {
       "src": "/api/(?<req>.*)",
-      "dest": "http://3.80.61.56:8080/zukvnc/api/$req"
+      "dest": "http://52.23.166.142:8080/zukvnc/api/$req"
     },
     { 
       "src": "/(.*)",
