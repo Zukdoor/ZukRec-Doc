@@ -5,12 +5,22 @@
   "builds": [
     { "src": "./doc/index.html", "use": "@now/static" },
     { "src": "./doc/javascripts/*.min.js", "use": "@now/static" },
-    { "src": "./doc/stylesheets/*.min.css", "use": "@now/static" }
+    { "src": "./doc/stylesheets/*.min.css", "use": "@now/static" },
+    { "src": "./CHANGELOG.md", "use": "@now/md"},
+    { "src": "./CHANGELOG-CN.md", "use": "@now/md"}
   ],
   "routes": [
     {
       "src": "/api/(?<req>.*)",
       "dest": "http://52.23.166.142:8080/zukvnc/api/$req"
+    },
+    {
+      "src": "/changelog",
+      "dest": "/CHANGELOG.html"
+    },
+    {
+      "src": "/changelog/cn",
+      "dest": "/CHANGELOG-CN.html"
     },
     { 
       "src": "/(.*)",
