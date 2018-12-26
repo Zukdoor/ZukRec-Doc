@@ -1,6 +1,6 @@
 # Changelog
 
-[中文](/changelog/cn)
+[中文](/CHANGELOG-CN.md)
 
 ## [1.1.0] - Unreleased
 

@@ -22,6 +22,14 @@
       "src": "/changelog/cn",
       "dest": "/CHANGELOG-CN.html"
     },
+    {
+      "src": "/CHANGELOG.md",
+      "dest": "/CHANGELOG.html"
+    },
+    {
+      "src": "/CHANGELOG-CN.md",
+      "dest": "/CHANGELOG-CN.html"
+    },
     { 
       "src": "/(.*)",
       "dest": "/doc/$1"

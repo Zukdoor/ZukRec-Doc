@@ -1,6 +1,6 @@
 # 更新日志
 
-[English](/changelog)
+[English](/CHANGELOG.md)
 
 ## [1.1.0] - 开发中
 
