@@ -9,8 +9,8 @@
     "basePath": "/",
     "tags": [
         {
-            "name": "record-controller",
-            "description": "record控制接口"
+            "name": "record",
+            "description": "录制相关接口"
         },
         {
             "name": "rtmp-controller",
@@ -21,10 +21,9 @@
         "/api/v1/record/start": {
             "post": {
                 "tags": [
-                    "record-controller"
+                    "record"
                 ],
-                "summary": "开始录制，返回值为display，如果想对同一面板进行推流，可在推流接口传入此display.回调通过POST方法请求，参数包括display, message。其中message有三种，record_success，record_failed，record_stopped",
-                "operationId": "startUsingGET",
+                "summary": "开始录制，返回值为任务的id，如果想对同一面板进行推流，可在推流接口传入此id。回调通过POST方法请求，参数包括display, message。其中message有三种，record_success，record_failed，record_stopped",
                 "produces": [
                     "*/*"
                 ],
@@ -50,21 +49,6 @@
                         "description": "视频描述",
                         "required": false,
                         "type": "string"
-                    },
-                    {
-                        "name": "format",
-                        "in": "query",
-                        "description": "视频格式（目前只支持mkv）",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "hasAudio",
-                        "in": "query",
-                        "description": "是否有声音",
-                        "required": false,
-                        "type": "integer",
-                        "format": "int32"
                     },
                     {
                         "name": "callback",
@@ -96,7 +80,7 @@
         "/api/v1/record/stop": {
             "post": {
                 "tags": [
-                    "record-controller"
+                    "record"
                 ],
                 "summary": "停止录制，返回本次录制的相关信息，具体见返回描述.回调通过POST方法请求，参数包括display, message, data。其中message有两种，video_upload_success，video_upload_failed，data为s3的url",
                 "operationId": "stopUsingPOST",
@@ -148,7 +132,7 @@
         "/api/v1/record/info": {
             "get": {
                 "tags": [
-                    "record-controller"
+                    "record"
                 ],
                 "summary": "获取录制信息，若出现错误通过此接口发现",
                 "operationId": "getRecordInfoUsingGET",
