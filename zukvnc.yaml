@@ -4,14 +4,16 @@ info:
   description: 'ZukRec的RESTFul接口文档<br>说明: 调用方式及参数在相关接口中有详细描述！<br>'
   version: '1.0'
 servers: 
-  - url: rec.zukdoor.cloud/zukvnc
+  - url: rec.zukdoor.cloud/zukvnc/api/v1
 tags:
   - name: record
     description: 录制相关接口
-  - name: rtmp-controller
+  - name: rtmp
     description: 推流相关接口
+  - name: display
+    description: 面板相关接口
 paths:
-  /api/v1/record/start:
+  /record/start:
     post:
       tags:
         - record
@@ -56,7 +58,7 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
-  /api/v1/record/stop:
+  /record/stop:
     post:
       tags:
         - record
@@ -89,7 +91,7 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
-  /api/v1/record/info:
+  /record/info:
     get:
       tags:
         - record
@@ -111,10 +113,10 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
-  /api/v1/rtmp/start:
+  /rtmp/start:
     post:
       tags:
-        - rtmp-controller
+        - rtmp
       summary: '推流，返回值为display，如果想对同一面板进行录制，可在录制接口传入此display.回调通过POST方法请求，参数包括display, message, data.其中message有三种，push_success，push_failed，push_stopped，data为rtmlUrl'
       requestBody:
         content:
@@ -156,10 +158,10 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
-  /api/v1/rtmp/stop:
+  /rtmp/stop:
     post:
       tags:
-        - rtmp-controller
+        - rtmp
       summary: 停止推流
       requestBody:
         content:
@@ -181,6 +183,98 @@ paths:
       responses:
         '200':
           description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /display/audioOffset:
+    post:
+      tags:
+        - display
+      summary: '设置音频偏移'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - display
+              - millisecond
+              properties:
+                display:
+                  type: integer
+                  format: int64
+                  description: 面板id
+                millisecond:
+                  type: integer
+                  format: int64
+                  description: 偏移的毫秒数
+      responses:
+        '200':
+          description: 修改成功
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /display/autoOffset:
+    post:
+      tags:
+        - display
+      summary: '开启/关闭自动偏移'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - display
+              - millisecond
+              properties:
+                display:
+                  type: integer
+                  format: int64
+                  description: 面板id
+                enabled:
+                  type: boolean
+                  description: 开启/关闭
+      responses:
+        '200':
+          description: 修改成功
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /display/setRp:
+    post:
+      tags:
+        - display
+      summary: '设置屏幕分辨率'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - display
+              - millisecond
+              properties:
+                display:
+                  type: integer
+                  format: int64
+                  description: 面板id
+                rp:
+                  type: integer
+                  format: int32
+                  description: 屏幕分辨率
+      responses:
+        '200':
+          description: 修改成功
         '401':
           description: Unauthorized
         '403':
