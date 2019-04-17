@@ -12,6 +12,46 @@ tags:
     description: 推流相关接口
   - name: display
     description: 面板相关接口
+  - name: user
+    description: 用户信息相关接口
+components:
+  schemas:
+    VncUserInfo:
+      type: object
+      properties:
+        userId:
+          type: string
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/VncTask'
+    VncTask:
+      type: object
+      properties:
+        taskId:
+          type: integer
+          format: int64
+        startTime:
+          type: string
+          format: date
+        stopTime:
+          type: string
+          format: date
+        recordFile:
+          $ref: '#/components/schemas/RecordFile'
+    RecordFile:
+      type: object
+      properties:
+        key:
+          type: string
+        fileName:
+          type: string
+        createdTime:
+          type: string
+          format: date
+        size:
+          type: integer
+          format: int64
 paths:
   /record/start:
     post:
@@ -275,6 +315,242 @@ paths:
       responses:
         '200':
           description: 修改成功
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /display/click:
+    post:
+      tags:
+        - display
+      summary: '控制鼠标点击屏幕'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - display
+              - x
+              - y
+              properties:
+                display:
+                  type: integer
+                  format: int64
+                  description: 面板id
+                x:
+                  type: integer
+                  format: int32
+                  description: 屏幕横坐标
+                y:
+                  type: integer
+                  format: int32
+                  description: 屏幕纵坐标
+      responses:
+        '200':
+          description: 操作成功
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not 
+  /users:
+    get:
+      tags:
+        - user
+      summary: '获取所有用户信息（需要管理员权限）'
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VncUserInfo'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+  /users/{userId}:
+    get:
+      tags:
+        - user
+      summary: '获取指定用户信息'
+      parameters: 
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VncUserInfo'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /users/{userId}/recordFiles:
+    get:
+      tags:
+        - user
+      summary: '获取录像文件信息'
+      parameters: 
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: fileName
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: maxSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: minSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: oldest
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+      - name: newest
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecordFile'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /users/{userId}/vnctasks/{taskId}/recordFile/url:
+    post:
+      tags:
+        - user
+      summary: '获取录像文件信息'
+      parameters: 
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: taskId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                expireTime:
+                  type: integer
+                  format: int64
+                  description: 有效时间，以秒为单位，最长为一周
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    format: url
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /users/{userId}/vnctasks/{taskId}/recordFile:
+    delete:
+      tags:
+        - user
+      summary: '删除录像文件'
+      parameters: 
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: taskId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '204':
+          description: 操作成功
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - user
+      summary: '更改录像文件名'
+      parameters: 
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: taskId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+      responses:
+        '200':
+          description: 操作成功
         '401':
           description: Unauthorized
         '403':
