@@ -110,8 +110,6 @@ paths:
               type: object
               required:
               - display
-              - url
-              - recordName
               properties:
                 display:
                   type: integer
@@ -166,7 +164,7 @@ paths:
               required:
               - display
               - url
-              - recordName
+              - rtmpUrl
               properties:
                 display:
                   type: integer
@@ -210,8 +208,7 @@ paths:
               type: object
               required:
               - display
-              - url
-              - recordName
+              - rtmpUrl
               properties:
                 display:
                   type: integer
@@ -302,7 +299,7 @@ paths:
               type: object
               required:
               - display
-              - millisecond
+              - rp
               properties:
                 display:
                   type: integer
@@ -458,7 +455,7 @@ paths:
     post:
       tags:
         - user
-      summary: '获取录像文件信息'
+      summary: '获取录像地址'
       parameters: 
       - name: userId
         in: path
