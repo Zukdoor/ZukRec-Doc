@@ -8,6 +8,6 @@
     "redoc-cli": "^0.8.3"
   },
   "scripts": {
-    "build": "redoc-cli bundle zukvnc.yaml && mkdir -p doc && mv redoc-static.html doc/index.html && sed \"s@<title>ReDoc documentation</title>@<title>ZukRec Doc</title>@\" doc/index.html"
+    "build": "redoc-cli bundle zukvnc.yaml && mkdir -p doc && mv redoc-static.html doc/index.html && sed \"s@<title>ReDoc documentation</title>@<title>ZukRec Doc</title>@\" -i doc/index.html"
   }
 }
