@@ -424,7 +424,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/RecordFile'
+                  $ref: '#/components/schemas/VncTask'
         '401':
           description: Unauthorized
         '403':
