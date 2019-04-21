@@ -121,31 +121,7 @@ paths:
                   type: string
                   description:  回调地址，参数包括message：录制状态.分为上传成功，上传失败；data：录像文件在s3上的url
       responses:
-        '200':
-          description: OK
-        '201':
-          description: Created
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-  /record/info:
-    get:
-      tags:
-        - record
-      summary: 获取录制信息，若出现错误通过此接口发现
-      parameters:
-        - name: display
-          in: query
-          description: 任务id
-          required: false
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
+        '204':
           description: OK
         '401':
           description: Unauthorized
@@ -198,6 +174,8 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+        '409':
+          description: Conflict
   /rtmp/stop:
     post:
       tags:
@@ -220,8 +198,8 @@ paths:
                   type: string
                   description: 停止推流的地址
       responses:
-        '200':
-          description: OK
+        '204':
+          description: No Content
         '401':
           description: Unauthorized
         '403':
@@ -475,6 +453,8 @@ paths:
           application/json:
             schema:
               type: object
+              required: 
+              - expireTime
               properties:
                 expireTime:
                   type: integer
@@ -544,6 +524,8 @@ paths:
           application/json:
             schema:
               type: object
+              required: 
+              - fileName
               properties:
                 fileName:
                   type: string
