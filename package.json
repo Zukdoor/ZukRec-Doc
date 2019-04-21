@@ -5,9 +5,9 @@
   "author": "Zukdoor Inc.",
   "license": "MIT",
   "devDependencies": {
-    "spectacle-docs": "^1.0.6"
+    "redoc-cli": "^0.8.3"
   },
   "scripts": {
-    "build": "spectacle zukvnc.yaml -t doc"
+    "build": "redoc-cli bundle zukvnc.yaml && mkdir -p doc && mv redoc-static.html doc/index.html && sed \"s@<title>ReDoc documentation</title>@<title>ZukRec Doc</title>@\" doc/index.html"
   }
 }
