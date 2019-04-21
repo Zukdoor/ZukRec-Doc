@@ -4,7 +4,7 @@ info:
   description: 'ZukRec的RESTFul接口文档<br>说明: 调用方式及参数在相关接口中有详细描述！<br>'
   version: '1.0'
 servers: 
-  - url: api/v1
+  - url: https://rec.zukdoor.cloud/api/v1
 tags:
   - name: record
     description: 录制相关接口
