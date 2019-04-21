@@ -98,6 +98,8 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+        '409':
+          description: Conflict
   /record/stop:
     post:
       tags:
@@ -521,7 +523,7 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
-    put:
+    patch:
       tags:
         - user
       summary: '更改录像文件名'
