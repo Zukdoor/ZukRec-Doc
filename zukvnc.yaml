@@ -2,539 +2,71 @@ openapi: '3.0.1'
 info:
   title: ZukVnc
   description: 'ZukRec的RESTFul接口文档<br>说明: 调用方式及参数在相关接口中有详细描述！<br>'
-  version: '1.0'
+  version: '1.1'
 servers: 
   - url: https://rec.zukdoor.cloud/api/v1
 tags:
-  - name: record
-    description: 录制相关接口
-  - name: rtmp
-    description: 推流相关接口
-  - name: display
-    description: 面板相关接口
-  - name: user
-    description: 用户信息相关接口
+  - name: task
+    description: 任务相关接口
 components:
   schemas:
-    VncUserInfo:
+    PendingVncTask:
       type: object
       properties:
+        display:
+          type: number
+          format: int64
         userId:
           type: string
-        tasks:
-          type: array
-          items:
-            $ref: '#/components/schemas/VncTask'
-    VncTask:
-      type: object
-      properties:
-        taskId:
-          type: integer
-          format: int64
-        startTime:
+        url:
           type: string
-          format: date
-        stopTime:
-          type: string
-          format: date
-        recordFile:
-          $ref: '#/components/schemas/RecordFile'
-    RecordFile:
-      type: object
-      properties:
-        key:
-          type: string
-        fileName:
+        callback:
           type: string
         createdTime:
-          type: string
-          format: date
-        size:
-          type: integer
-          format: int64
+          type: number
+          description: unix时间戳
 paths:
-  /record/start:
+  /tasks:
     post:
       tags:
-        - record
-      summary: '开始录制，返回值为任务的id，如果想对同一面板进行推流，可在推流接口传入此id。回调通过POST方法请求，参数包括display, message。其中message有三种，record_success，record_failed，record_stopped'
+        - task
+      summary: '创建新任务。该接口为异步接口，任务成功开始后发送回调事件task-started'
       requestBody:
         content:
           application/json:
             schema:
               type: object
               required:
-              - display
               - url
-              - recordName
               properties:
-                display:
-                  type: integer
-                  format: int64
-                  description: 面板id（不指定特定面板时，需传入-1）
                 url:
                   type: string
-                  description: 页面链接，准备录制的页面url
-                recordName:
-                  type: string
-                  description: 视频描述
+                  description: 页面链接，任务对应的页面url
                 callback:
                   type: string
-                  description:  回调地址，参数包括message：录制状态.分为开启录制成功，开启录制失败，录制结束
+                  description:  回调地址
       responses:
-        '201':
-          description: 任务已创建
+        '202':
+          description: 服务器已收到创建请求
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                    format: int64
+                $ref: '#/components/schemas/PendingVncTask'
         '401':
           description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-        '409':
-          description: Conflict
-  /record/stop:
-    post:
-      tags:
-        - record
-      summary: '停止录制，返回本次录制的相关信息，具体见返回描述.回调通过POST方法请求，参数包括display, message, data。其中message有两种，video_upload_success，video_upload_failed，data为s3的url'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-              - display
-              properties:
-                display:
-                  type: integer
-                  format: int64
-                  description: 面板id
-                callback:
-                  type: string
-                  description:  回调地址，参数包括message：录制状态.分为上传成功，上传失败；data：录像文件在s3上的url
-      responses:
-        '204':
-          description: OK
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-  /rtmp/start:
-    post:
-      tags:
-        - rtmp
-      summary: '推流，返回值为display，如果想对同一面板进行录制，可在录制接口传入此display.回调通过POST方法请求，参数包括display, message, data.其中message有三种，push_success，push_failed，push_stopped，data为rtmlUrl'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-              - display
-              - url
-              - rtmpUrl
-              properties:
-                display:
-                  type: integer
-                  format: int64
-                  description: 面板id（不指定特定面板时，需传入-1）
-                url:
-                  type: string
-                  description: 页面链接，准备录制的页面url
-                rtmpUrl:
-                  type: string
-                  description: 推流地址，同一面板可推向多个地址
-                callback:
-                  type: string
-                  description:  回调地址，参数包括message：录制状态.分为开启录制成功，开启录制失败，录制结束
-      responses:
-        '201':
-          description: 任务已创建
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                    format: int64
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-        '409':
-          description: Conflict
-  /rtmp/stop:
-    post:
-      tags:
-        - rtmp
-      summary: 停止推流
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-              - display
-              - rtmpUrl
-              properties:
-                display:
-                  type: integer
-                  format: int64
-                  description: 面板id
-                rtmpUrl:
-                  type: string
-                  description: 停止推流的地址
-      responses:
-        '204':
-          description: No Content
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-  /display/audioOffset:
-    post:
-      tags:
-        - display
-      summary: '设置音频偏移'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-              - display
-              - millisecond
-              properties:
-                display:
-                  type: integer
-                  format: int64
-                  description: 面板id
-                millisecond:
-                  type: integer
-                  format: int64
-                  description: 偏移的毫秒数
-      responses:
-        '200':
-          description: 修改成功
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-  /display/autoOffset:
-    post:
-      tags:
-        - display
-      summary: '开启/关闭自动偏移'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-              - display
-              - millisecond
-              properties:
-                display:
-                  type: integer
-                  format: int64
-                  description: 面板id
-                enabled:
-                  type: boolean
-                  description: 开启/关闭
-      responses:
-        '200':
-          description: 修改成功
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-  /display/setRp:
-    post:
-      tags:
-        - display
-      summary: '设置屏幕分辨率'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-              - display
-              - rp
-              properties:
-                display:
-                  type: integer
-                  format: int64
-                  description: 面板id
-                rp:
-                  type: integer
-                  format: int32
-                  description: 屏幕分辨率
-      responses:
-        '200':
-          description: 修改成功
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-  /display/click:
-    post:
-      tags:
-        - display
-      summary: '控制鼠标点击屏幕'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-              - display
-              - x
-              - y
-              properties:
-                display:
-                  type: integer
-                  format: int64
-                  description: 面板id
-                x:
-                  type: integer
-                  format: int32
-                  description: 屏幕横坐标
-                y:
-                  type: integer
-                  format: int32
-                  description: 屏幕纵坐标
-      responses:
-        '200':
-          description: 操作成功
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not 
-  /users:
-    get:
-      tags:
-        - user
-      summary: '获取所有用户信息（需要管理员权限）'
-      responses:
-        '200':
-          description: 操作成功
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/VncUserInfo'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-  /users/{userId}:
-    get:
-      tags:
-        - user
-      summary: '获取指定用户信息'
-      parameters: 
-      - name: userId
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: 操作成功
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/VncUserInfo'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-  /users/{userId}/recordFiles:
-    get:
-      tags:
-        - user
-      summary: '获取录像文件信息'
-      parameters: 
-      - name: userId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: fileName
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: maxSize
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int64
-      - name: minSize
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int64
-      - name: oldest
-        in: query
-        required: false
-        schema:
-          type: string
-          format: date
-      - name: newest
-        in: query
-        required: false
-        schema:
-          type: string
-          format: date
-      responses:
-        '200':
-          description: 操作成功
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/VncTask'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-  /users/{userId}/vnctasks/{taskId}/recordFile/url:
-    post:
-      tags:
-        - user
-      summary: '获取录像地址'
-      parameters: 
-      - name: userId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: taskId
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required: 
-              - expireTime
-              properties:
-                expireTime:
-                  type: integer
-                  format: int64
-                  description: 有效时间，以秒为单位，最长为一周
-      responses:
-        '200':
-          description: 操作成功
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  url:
-                    type: string
-                    format: url
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-  /users/{userId}/vnctasks/{taskId}/recordFile:
+  /tasks/{display}:
     delete:
       tags:
-        - user
-      summary: '删除录像文件'
-      parameters: 
-      - name: userId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: taskId
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
+        - task
+      summary: '停止任务。该接口为同步接口'
+      parameters:
+        - name: display
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         '204':
-          description: 操作成功
+          description: 成功停止
         '401':
           description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-    patch:
-      tags:
-        - user
-      summary: '更改录像文件名'
-      parameters: 
-      - name: userId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: taskId
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required: 
-              - fileName
-              properties:
-                fileName:
-                  type: string
-      responses:
-        '200':
-          description: 操作成功
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
