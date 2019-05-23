@@ -1,7 +1,7 @@
 openapi: '3.0.1'
 info:
   title: ZukVnc
-  description: 'ZukRec的RESTFul接口文档<br>说明: 调用方式及参数在相关接口中有详细描述！<br>'
+  description: 'ZukRec的RESTFul接口文档<br>'
   version: '1.1'
 servers: 
   - url: https://rec.zukdoor.cloud/api/v1
@@ -25,12 +25,29 @@ components:
         createdTime:
           type: number
           description: unix时间戳
+    RecordFile:
+      type: object
+      properties:
+        taskId:
+          type: number
+          format: int64
+          description: display
+        key:
+          type: string
+        fileName:
+          type: string
+        createdTime:
+          type: string
+          format: date
+        size:
+          type: integer
+          format: int64
 paths:
   /tasks:
     post:
       tags:
         - task
-      summary: '创建新任务。该接口为异步接口，任务成功开始后发送回调事件task-started'
+      summary: '创建新任务'
       requestBody:
         content:
           application/json:
@@ -53,12 +70,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/PendingVncTask'
         '401':
-          description: Unauthorized
+          description: 用户未登录
   /tasks/{display}:
     delete:
       tags:
         - task
-      summary: '停止任务。该接口为同步接口'
+      summary: '停止任务'
       parameters:
         - name: display
           in: path
@@ -69,4 +86,56 @@ paths:
         '204':
           description: 成功停止
         '401':
-          description: Unauthorized
+          description: 用户未登录
+  /tasks/{display}/record:
+    post:
+      tags:
+        - task
+      summary: '开始录制'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - recordName
+              properties:
+                recordName:
+                  type: string
+                  description: 录像名称，同一任务中的录像名称不能重复
+      parameters:
+        - name: display
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '202':
+          description: 收到开始录制请求
+        '401':
+          description: 用户未登录
+        '403':
+          description: 用户无权限
+        '404':
+          description: 任务不存在
+        '409':
+          description: 该任务正在录制中或录像名重复
+    delete:
+      tags:
+        - task
+      summary: '停止录制'
+      parameters:
+        - name: display
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 成功停止
+        '401':
+          description: 用户未登录
+        '403':
+          description: 用户无权限
+        '404':
+          description: 任务不存在
