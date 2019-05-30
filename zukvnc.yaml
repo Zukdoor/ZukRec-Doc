@@ -87,7 +87,7 @@ paths:
           description: 成功停止
         '401':
           description: 用户未登录
-  /tasks/{display}/record:
+  /tasks/{display}/records:
     post:
       tags:
         - task
@@ -133,6 +133,49 @@ paths:
       responses:
         '204':
           description: 成功停止
+        '401':
+          description: 用户未登录
+        '403':
+          description: 用户无权限
+        '404':
+          description: 任务不存在
+  /tasks/{display}/records/{recordName}/urls:
+    post:
+      tags:
+        - task
+      summary: '生成录像地址'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - expireTime
+              properties:
+                expireTime:
+                  type: number
+                  description: 有效期时间，单位为秒
+      parameters:
+        - name: display
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: recordName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 录像url
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
         '401':
           description: 用户未登录
         '403':
