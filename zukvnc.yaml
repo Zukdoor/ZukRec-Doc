@@ -7,7 +7,9 @@ servers:
   - url: https://rec.zukdoor.cloud/api/v1
 tags:
   - name: task
-    description: 任务相关接口
+    description: 进行中任务相关接口
+  - name: stopped-task
+    description: 已停止任务相关接口
 components:
   schemas:
     PendingVncTask:
@@ -139,10 +141,10 @@ paths:
           description: 用户无权限
         '404':
           description: 任务不存在
-  /tasks/{display}/records/{recordName}/urls:
+  /stopped-tasks/{display}/records/{recordName}/urls:
     post:
       tags:
-        - task
+        - stopped-task
       summary: '生成录像地址'
       requestBody:
         content:
