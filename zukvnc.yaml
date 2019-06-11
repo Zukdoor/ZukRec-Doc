@@ -141,6 +141,64 @@ paths:
           description: 用户无权限
         '404':
           description: 任务不存在
+  /tasks/{display}/rtmps:
+    post:
+      tags:
+        - task
+      summary: '开始推流'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - rtmpUrl
+              properties:
+                rtmpUrl:
+                  type: string
+                  description: 推流地址
+      parameters:
+        - name: display
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '202':
+          description: 收到开始推流请求
+        '401':
+          description: 用户未登录
+        '403':
+          description: 用户无权限
+        '404':
+          description: 任务不存在
+        '409':
+          description: 推流地址重复
+  /tasks/{display}/rtmps/{rtmpUrl}:
+    delete:
+      tags:
+        - task
+      summary: '停止推流'
+      parameters:
+        - name: display
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: rtmpUrl
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 成功停止
+        '401':
+          description: 用户未登录
+        '403':
+          description: 用户无权限
+        '404':
+          description: 任务不存在
   /stopped-tasks/{display}/records/{recordName}/urls:
     post:
       tags:
@@ -169,7 +227,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        '201':
           description: 录像url
           content:
             application/json:
