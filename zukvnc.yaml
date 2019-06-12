@@ -74,6 +74,40 @@ paths:
         '401':
           description: 用户未登录
   /tasks/{display}:
+    patch:
+      tags:
+        - task
+      summary: '修改任务参数'
+      parameters:
+        - name: display
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                audioOffsetMillisecond:
+                  type: number
+                  description: 音频偏移时间
+                autoOffset:
+                  type: boolean
+                  description:  是否自动调整音频偏移
+                rp:
+                  type: number
+                  description:  调整屏幕分辨率
+      responses:
+        '200':
+          description: 操作成功
+        '401':
+          description: 用户未登录
+        '403':
+          description: 用户无权限
+        '404':
+          description: 任务不存在
     delete:
       tags:
         - task
@@ -89,6 +123,10 @@ paths:
           description: 成功停止
         '401':
           description: 用户未登录
+        '403':
+          description: 用户无权限
+        '404':
+          description: 任务不存在
   /tasks/{display}/records:
     post:
       tags:
@@ -193,6 +231,41 @@ paths:
       responses:
         '204':
           description: 成功停止
+        '401':
+          description: 用户未登录
+        '403':
+          description: 用户无权限
+        '404':
+          description: 任务不存在
+  /tasks/{display}/clicks:
+    post:
+      tags:
+        - task
+      summary: '模拟鼠标点击'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - x
+              - y
+              properties:
+                x:
+                  type: number
+                  description: 横坐标
+                y:
+                  type: number
+                  description: 纵坐标
+      parameters:
+        - name: display
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: 模拟点击成功
         '401':
           description: 用户未登录
         '403':
