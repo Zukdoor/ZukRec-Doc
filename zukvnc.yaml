@@ -143,6 +143,12 @@ paths:
                 recordName:
                   type: string
                   description: 录像名称，同一任务中的录像名称不能重复
+                format:
+                  type: string
+                  description: 录像格式，默认为mkv
+                onlyAudio:
+                  type: boolean
+                  description: 是否只录制音频，默认为否
       parameters:
         - name: display
           in: path

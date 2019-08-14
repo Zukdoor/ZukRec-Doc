@@ -10,4 +10,3 @@
 | 录制失败     | record-failed        | String recordName   |
 | 录像上传成功 | video-upload-success | RecordFile fileInfo |
 | 录像上传失败 | video-upload-failed  | String error        |
-
