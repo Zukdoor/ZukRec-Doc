@@ -218,8 +218,8 @@ paths:
           description: 任务不存在
         '409':
           description: 推流地址重复
-  /tasks/{display}/rtmps/{rtmpUrl}:
-    delete:
+  /tasks/{display}/rtmps/stop:
+    post:
       tags:
         - task
       summary: '停止推流'
@@ -229,11 +229,17 @@ paths:
           required: true
           schema:
             type: string
-        - name: rtmpUrl
-          in: path
-          required: true
-          schema:
-            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - rtmpUrl
+              properties:
+                rtmpUrl:
+                  type: string
+                  description: 停止推流地址
       responses:
         '204':
           description: 成功停止
