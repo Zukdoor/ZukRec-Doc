@@ -241,8 +241,8 @@ paths:
                   type: string
                   description: 停止推流地址
       responses:
-        '204':
-          description: 成功停止
+        '202':
+          description: 已收到停止请求
         '401':
           description: 用户未登录
         '403':
