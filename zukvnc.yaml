@@ -210,6 +210,13 @@ paths:
       responses:
         '202':
           description: 收到开始推流请求
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rtmpId:
+                    type: integer
         '401':
           description: 用户未登录
         '403':
@@ -218,8 +225,8 @@ paths:
           description: 任务不存在
         '409':
           description: 推流地址重复
-  /tasks/{display}/rtmps/stop:
-    post:
+  /tasks/{display}/rtmps/{rtmpId}:
+    delete:
       tags:
         - task
       summary: '停止推流'
@@ -229,20 +236,14 @@ paths:
           required: true
           schema:
             type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-              - rtmpUrl
-              properties:
-                rtmpUrl:
-                  type: string
-                  description: 停止推流地址
+        - name: rtmpId
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
-        '202':
-          description: 已收到停止请求
+        '204':
+          description: 停止推流成功
         '401':
           description: 用户未登录
         '403':
