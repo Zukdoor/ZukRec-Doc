@@ -2,7 +2,7 @@ openapi: '3.0.1'
 info:
   title: ZukVnc
   description: 'ZukRec的RESTFul接口文档<br>'
-  version: '1.1'
+  version: '1.2'
 servers: 
   - url: https://rec.zukdoor.cloud/api/v1
 tags:
@@ -27,23 +27,6 @@ components:
         createdTime:
           type: number
           description: unix时间戳
-    RecordFile:
-      type: object
-      properties:
-        taskId:
-          type: number
-          format: int64
-          description: display
-        key:
-          type: string
-        fileName:
-          type: string
-        createdTime:
-          type: string
-          format: date
-        size:
-          type: integer
-          format: int64
 paths:
   /tasks:
     post:
@@ -64,6 +47,9 @@ paths:
                 callback:
                   type: string
                   description:  回调地址
+                region:
+                  type: string
+                  description:  任务运行的区域，当前仅支持us-east-1和cn-north-1
       responses:
         '202':
           description: 服务器已收到创建请求
