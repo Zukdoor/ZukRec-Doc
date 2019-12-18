@@ -10,9 +10,104 @@ tags:
     description: 进行中任务相关接口
   - name: stopped-task
     description: 已停止任务相关接口
+  - name: instance
+    description: 实例相关接口
 components:
   schemas:
+    TaskInfo:
+      type: object
+      properties:
+        taskArn:
+          type: string
+        ec2InstanceId:
+          type: string
+        ip:
+          type: string
+        createdTime:
+          type: string
+    RecordFile:
+      type: object
+      properties:
+        taskId:
+          type: number
+        recordName:
+          type: string
+        createdTime:
+          type: string
+        size:
+          type: number
+    VncTask:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int64
+        userId:
+          type: string
+        startTime:
+          type: number
+          description: unix时间戳
+        stopTime:
+          type: number
+          description: unix时间戳
+        recordingName:
+          type: string
+          description: 正在录像的文件名
+        rtmpUrls:
+          type: array
+          description: 正在推流的地址集合
+          items:
+            type: object
+            description: 推流信息
+            properties:
+              id:
+                type: number
+              url:
+                type: string
+        recordFiles:
+          type: array
+          description: 已录制的录像文件名集合
+          items:
+            $ref: '#/components/schemas/RecordFile'
+        ended:
+          type: boolean
+    VncUserInfoUnWindTasks:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int64
+        userId:
+          type: string
+        task:
+          $ref: '#/components/schemas/PendingVncTask'
+    ListAllStopedTaskResponse:
+      type: object
+      properties:
+        totalCount:
+          type: number
+          format: int32
+        page:
+          type: number
+          format: int32
+        data:
+          $ref: '#/components/schemas/TaskInfo'
     PendingVncTask:
+      type: object
+      properties:
+        display:
+          type: number
+          format: int64
+        userId:
+          type: string
+        url:
+          type: string
+        callback:
+          type: string
+        createdTime:
+          type: number
+          description: unix时间戳
+    RunningVncTask:
       type: object
       properties:
         display:
@@ -50,6 +145,10 @@ paths:
                 region:
                   type: string
                   description:  任务运行的区域，当前仅支持us-east-1和cn-north-1
+              example: 
+                url: 'https://www.zhihu.com/'
+                callback: 'http://18.234.175.38:10003/api/v1/test/callback'
+                region: 'cn-north-1'
       responses:
         '202':
           description: 服务器已收到创建请求
@@ -59,6 +158,55 @@ paths:
                 $ref: '#/components/schemas/PendingVncTask'
         '401':
           description: 用户未登录
+    get:
+      tags:
+        - task
+      summary: '列出所有任务'
+      parameters:
+        - name: pageSize
+          in: query
+          description: 每一页展示的任务数量，默认为20
+          schema: 
+            type: number
+        - name: pageNum
+          description: 页数，从0开始，默认为0
+          in: query
+          schema: 
+            type: number
+        - name: userId
+          in: query
+          schema: 
+            type: string
+        - name: stopped
+          in: query
+          schema: 
+            type: boolean
+        - name: startedTime
+          in: query
+          schema: 
+            type: number
+        - name: stoppedTime
+          in: query
+          schema: 
+            type: number
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/VncTask'
+                  totalCount:
+                    type: number
+        '401':
+          description: 用户未登录
+        '403':
+          description: 用户无权限
   /tasks/{display}:
     patch:
       tags:
@@ -271,6 +419,33 @@ paths:
           description: 用户无权限
         '404':
           description: 任务不存在
+  /stopped-tasks:
+    get:
+      tags:
+        - stopped-task
+      summary: '获取已结束任务信息'
+      parameters:
+        - name: pageSize
+          in: query
+          required: false
+          description: '每一页的任务数量'
+          schema:
+            type: number
+        - name: pageNum
+          in: query
+          required: false
+          description: '第几页，从0开始计数'
+          schema:
+            type: number
+      responses:
+        '200':
+          description: 任务信息
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ''
   /stopped-tasks/{display}/records/{recordName}/urls:
     post:
       tags:
@@ -314,3 +489,25 @@ paths:
           description: 用户无权限
         '404':
           description: 任务不存在
+  /instances:
+    get:
+      tags:
+        - instance
+      summary: '获取所有运行中实例'
+      responses:
+        '200':
+          description: 所有实例
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  region:
+                    type: string
+                    description: 所在区域
+                  instance:
+                    $ref: '#/components/schemas/TaskInfo'
+        '401':
+          description: 用户未登录
+        '403':
+          description: 用户无权限
