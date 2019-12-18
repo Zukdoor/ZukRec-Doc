@@ -5,9 +5,14 @@
   "builds": [
     { "src": "./doc/index.html", "use": "@now/static" },
     { "src": "./CHANGELOG.md", "use": "@now/md"},
-    { "src": "./CHANGELOG-CN.md", "use": "@now/md"}
+    { "src": "./CHANGELOG-CN.md", "use": "@now/md"},
+    { "src": "./callback.md", "use": "@now/md"}
   ],
   "routes": [
+    {
+      "src": "/callback",
+      "dest": "/callback.html"
+    },
     {
       "src": "/changelog",
       "dest": "/CHANGELOG.html"
