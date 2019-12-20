@@ -17,56 +17,26 @@
     {
       "src": "/callback",
       "dest": "/callback.html",
-      "meta": [
-        {
-          "name": "callback",
-          "content": "ZukVNC回调信息"
-        }
-      ],
       "css": "/style.css"
     },
     {
       "src": "/changelog",
       "dest": "/CHANGELOG.html",
-      "meta": [
-        {
-          "name": "changelog",
-          "content": "ZukVNC Changelog"
-        }
-      ],
       "css": "/style.css"
     },
     {
       "src": "/changelog/cn",
       "dest": "/CHANGELOG-CN.html",
-      "meta": [
-        {
-          "name": "changelog",
-          "content": "ZukVNC 更新日志"
-        }
-      ],
       "css": "/style.css"
     },
     {
       "src": "/CHANGELOG.md",
       "dest": "/CHANGELOG.html",
-      "meta": [
-        {
-          "name": "changelog",
-          "content": "ZukVNC Changelog"
-        }
-      ],
       "css": "/style.css"
     },
     {
       "src": "/CHANGELOG-CN.md",
       "dest": "/CHANGELOG-CN.html",
-      "meta": [
-        {
-          "name": "changelog",
-          "content": "ZukVNC 更新日志"
-        }
-      ],
       "css": "/style.css"
     },
     {
