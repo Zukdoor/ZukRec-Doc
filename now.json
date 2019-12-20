@@ -17,27 +17,52 @@
     {
       "src": "/callback",
       "dest": "/callback.html",
-      "css": "/style.css"
+      "config": {
+        "title": "ZukVNC Callback",
+        "language": "zh-cn",
+        "meta": [{ "name": "description", "content": "ZukVNC 回调信息一览"}],
+        "css": "/style.css"
+      }
     },
     {
       "src": "/changelog",
       "dest": "/CHANGELOG.html",
-      "css": "/style.css"
+      "config": {
+        "title": "ZukVNC Changelog",
+        "language": "en",
+        "meta": [{ "name": "description", "content": "Changelog for ZukVNC"}],
+        "css": "/style.css"
+      }
     },
     {
       "src": "/changelog/cn",
       "dest": "/CHANGELOG-CN.html",
-      "css": "/style.css"
+      "config": {
+        "title": "ZukVNC 更新日志",
+        "language": "zh-cn",
+        "meta": [{ "name": "description", "content": "ZukVNC 更新日志"}],
+        "css": "/style.css"
+      }
     },
     {
       "src": "/CHANGELOG.md",
       "dest": "/CHANGELOG.html",
-      "css": "/style.css"
+      "config": {
+        "title": "ZukVNC Changelog",
+        "language": "en",
+        "meta": [{ "name": "description", "content": "Changelog for ZukVNC"}],
+        "css": "/style.css"
+      }
     },
     {
       "src": "/CHANGELOG-CN.md",
       "dest": "/CHANGELOG-CN.html",
-      "css": "/style.css"
+       "config": {
+        "title": "ZukVNC 更新日志",
+        "language": "zh-cn",
+        "meta": [{ "name": "description", "content": "ZukVNC 更新日志"}],
+        "css": "/style.css"
+      }
     },
     {
       "src": "/",
