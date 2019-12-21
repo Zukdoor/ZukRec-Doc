@@ -16,5 +16,8 @@
 | 录制开始     | record-started       | String recordName   |
 | 录制停止     | record-stopped       | String recordName   |
 | 录制失败     | record-failed        | String recordName   |
+| 推流开始     | push-started         | Long rtmpId         |
+| 推流停止     | push-stopped         | Long rtmpId         |
+| 推流失败     | push-failed          | 无                  |
 | 录像上传成功 | video-upload-success | RecordFile fileInfo |
 | 录像上传失败 | video-upload-failed  | String error        |
