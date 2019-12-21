@@ -1,5 +1,4 @@
-name: Frontend CI
-
+name: Deploy to Now
 on:
   push:
     branches:
@@ -8,14 +7,13 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    name: Deploy to now
+    name: Deploy to Now
     steps:
       - uses: actions/checkout@v1
       - name: Setup NodeJS environment
         uses: actions/setup-node@v1
         with:
           node-version: "12.x"
-      - run: yarn global add now
       - run: yarn
       - run: bash scripts/deploy.sh
         env:
