@@ -1,8 +1,28 @@
 # Changelog
 
-[中文](/CHANGELOG-CN.md)
+## [1.3.0] - Unreleased
 
-## [1.1.0] - Unreleased
+| Module          | Version |
+| --------------- | ------- |
+| RecIt-Scheduler | 1.3.0   |
+| RecIt-Worker    | 1.3.0   |
+| RecIt-Console   | 1.3.0   |
+
+## [1.2.0] - 2019.11
+
+| Module          | Version |
+| --------------- | ------- |
+| RecIt-Scheduler | 1.2.0   |
+| RecIt-Worker    | 1.2.0   |
+
+## [1.1.1] - 2019.9
+
+| Module          | Version |
+| --------------- | ------- |
+| RecIt-Scheduler | 1.1.1   |
+| RecIt-Worker    | 1.1.1   |
+
+## [1.1.0] - 2019.8
 
 | Module          | Version |
 | --------------- | ------- |
@@ -14,7 +34,7 @@
 - Use Alpine instead of Ubuntu for smaller image size
 - Use Chromium instead of Firefox for better configurability and compatibility
 
-## [1.0.1] - 2018-12-26
+## [1.0.1] - 2018.12
 
 | Module          | Version |
 | --------------- | ------- |
@@ -26,7 +46,7 @@
 - If the corresponding task is not ready when a stop (record/rtmp) request is made, a success code will be returned instead of an error code.
 - Audio is delayed by 1.5 s so for better synchronization between audio and video. This is applied to both record and rtmp.
 
-## [1.0.0] - 2018-12-24
+## [1.0.0] - 2018.12
 
 | Module          | Version |
 | --------------- | ------- |

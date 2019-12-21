@@ -1,4 +1,6 @@
 #!/bin/bash
 
-now --prod --token=$NOW_TOKEN
-now rm zukrec --safe -y --token=$NOW_TOKEN
+yarn build:redoc
+cp ./redoc-static.html ./docs/.vuepress/public
+yarn build:vuepress
+now ./docs/.vuepress/dist --prod --token=$NOW_TOKEN

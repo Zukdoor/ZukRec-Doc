@@ -1,13 +1,14 @@
 {
-  "name": "ZukRec-Doc",
+  "name": "zukdoor-documentation",
   "version": "0.1.0",
-  "repository": "git@github.com:Zukdoor/ZukRec-Doc.git",
-  "author": "Zukdoor Inc.",
-  "license": "MIT",
-  "devDependencies": {
-    "redoc-cli": "^0.8.5"
-  },
+  "private": true,
   "scripts": {
-    "build": "redoc-cli bundle zukvnc.yaml && mkdir -p doc && mv redoc-static.html doc/index.html && sed \"s@<title>ReDoc documentation</title>@<title>ZukRec Doc</title>@\" -i doc/index.html"
+    "dev:vuepress": "vuepress dev docs",
+    "build:vuepress": "vuepress build docs",
+    "build:redoc": "redoc-cli bundle zukvnc.yaml"
+  },
+  "devDependencies": {
+    "redoc-cli": "^0.9.4",
+    "vuepress": "^1.2.0"
   }
 }
