@@ -1,0 +1,22 @@
+name: Frontend CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to now
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup NodeJS environment
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - run: yarn global add now
+      - run: yarn
+      - run: bash scripts/deploy.sh
+        env:
+          NOW_TOKEN: ${{ secrets.NOW_TOKEN }}
