@@ -557,7 +557,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/VncTask'
+                      $ref: '#/components/schemas/UserStatistics'
                   totalCount:
                     type: number
         '401':
