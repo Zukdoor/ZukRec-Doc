@@ -536,16 +536,14 @@ paths:
           required: true
           schema: 
             type: string
-        - name: start
+        - name: periods
           in: query
           schema: 
-            type: number
-            description: 起始时间，代码为毫秒
-        - name: end
-          in: query
-          schema: 
-            type: number
-            description: 结束时间，代码为毫秒
+            type: array
+            description: 查询的时间段，参数形式为[d1, d2, d3, d4]，返回结果为[[d1, d2)的统计信息, [d2, d3)的统计信息, [d3, d4)的统计信息]
+            items:
+              type: number
+              description: 时间戳，单位为毫秒
       responses:
         '200':
           description: 操作成功
