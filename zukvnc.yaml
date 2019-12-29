@@ -159,6 +159,15 @@ paths:
                 region:
                   type: string
                   description:  任务运行的区域，当前仅支持us-east-1和cn-north-1
+                width:
+                  type: number
+                  description: 宽
+                height:
+                  type: number
+                  description: 高
+                spot:
+                  type: boolean
+                  description: 是否使用spot实例
               example: 
                 url: 'https://www.zhihu.com/'
                 callback: 'http://18.234.175.38:10003/api/v1/test/callback'
@@ -538,6 +547,7 @@ paths:
             type: string
         - name: periods
           in: query
+          required: true
           schema: 
             type: array
             description: 查询的时间段，参数形式为[d1, d2, d3, d4]，返回结果为[[d1, d2)的统计信息, [d2, d3)的统计信息, [d3, d4)的统计信息]
@@ -556,6 +566,64 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/UserStatistics'
+                  totalCount:
+                    type: number
+        '401':
+          description: 用户未登录
+        '403':
+          description: 用户无权限
+  /users/{userId}/taskNums:
+    get:
+      tags:
+        - user
+      summary: '获取用户任务时长分布'
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema: 
+            type: string
+        - name: startTime
+          in: query
+          schema: 
+            type: array
+            description: 查询范围的开始时间
+            items:
+              type: number
+              description: 时间戳，单位为毫秒
+        - name: endTime
+          in: query
+          schema: 
+            type: array
+            description: 查询范围的结束时间
+            items:
+              type: number
+              description: 时间戳，单位为毫秒
+        - name: taskTimes
+          in: query
+          required: true
+          schema: 
+            type: array
+            description: 时间分布，参数形式为[d1, d2, d3, d4]，返回结果为[长度为[d1, d2)的任务数量, 长度为[d2, d3)的任务数量, 长度为[d3, d4)的任务数量]
+            items:
+              type: number
+              description: 任务时间长度，单位为毫秒
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        taskNum:
+                          type: number
+                          description: 任务数量
                   totalCount:
                     type: number
         '401':
