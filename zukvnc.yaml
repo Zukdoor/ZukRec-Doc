@@ -71,13 +71,8 @@ components:
           type: array
           description: 正在推流的地址集合
           items:
-            type: object
-            description: 推流信息
-            properties:
-              id:
-                type: number
-              url:
-                type: string
+            type: string
+            description: 推流地址
         recordFiles:
           type: array
           description: 已录制的录像文件名集合
@@ -306,6 +301,24 @@ paths:
                 onlyAudio:
                   type: boolean
                   description: 是否只录制音频，默认为否
+                storageType:
+                  type: number
+                  description: "0: 默认，1: AWS S3, 2: 阿里云OSS, 3: dropbox, 4: 七牛云"
+                accessKey:
+                  type: string
+                  description: "storageType为1, 2, 4需要"
+                secretKey:
+                  type: string
+                  description: "storageType为1, 2, 4需要"
+                bucketName:
+                  type: string
+                  description: "storageType为1, 2, 4需要"
+                region:
+                  type: string
+                  description: "storageType为1, 2, 4需要"
+                accessToken:
+                  type: string
+                  description: "storageType为3需要"
       parameters:
         - name: display
           in: path
@@ -356,7 +369,9 @@ paths:
               - rtmpUrl
               properties:
                 rtmpUrl:
-                  type: string
+                  type: array
+                  items:
+                    type: string
                   description: 推流地址
       parameters:
         - name: display
