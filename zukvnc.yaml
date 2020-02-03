@@ -587,6 +587,39 @@ paths:
           description: 用户未登录
         '403':
           description: 用户无权限
+  /users/statistics:
+    get:
+      tags:
+        - user
+      summary: '获取所有用户统计信息'
+      parameters:
+        - name: periods
+          in: query
+          required: true
+          schema: 
+            type: array
+            description: 查询的时间段，参数形式为[d1, d2, d3, d4]，返回结果为[[d1, d2)的统计信息, [d2, d3)的统计信息, [d3, d4)的统计信息]
+            items:
+              type: number
+              description: 时间戳，单位为毫秒
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserStatistics'
+                  totalCount:
+                    type: number
+        '401':
+          description: 用户未登录
+        '403':
+          description: 用户无权限
   /users/{userId}/taskNums:
     get:
       tags:
