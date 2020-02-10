@@ -2,11 +2,11 @@
 
 ## [1.5.0] - Unreleased
 
-| 功能模块            | 版本号   |
-| --------------- | ----- |
-| RecIt-Scheduler | 1.5.0 |
-| RecIt-Worker    | 1.5.0 |
-| RecIt-Console   | 1.5.0 |
+| Module          | Version |
+| --------------- | ------- |
+| RecIt-Scheduler | 1.5.0   |
+| RecIt-Worker    | 1.5.0   |
+| RecIt-Console   | 1.5.0   |
 
 ## [1.4.2] - 2020.2
 
