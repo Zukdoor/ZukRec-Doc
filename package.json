@@ -8,7 +8,7 @@
     "build:redoc": "redoc-cli bundle zukvnc.yaml"
   },
   "devDependencies": {
-    "redoc-cli": "^0.9.4",
-    "vuepress": "^1.2.0"
+    "redoc-cli": "^0.9.6",
+    "vuepress": "^1.3.0"
   }
 }

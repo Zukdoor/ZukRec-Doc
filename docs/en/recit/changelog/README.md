@@ -1,5 +1,45 @@
 # Changelog
 
+## [1.5.0] - Unreleased
+
+| Module          | Version |
+| --------------- | ------- |
+| RecIt-Scheduler | 1.5.0   |
+| RecIt-Worker    | 1.5.0   |
+| RecIt-Console   | 1.5.0   |
+
+## [1.4.2] - 2020.2
+
+| Module          | Version |
+| --------------- | ------- |
+| RecIt-Scheduler | 1.4.2   |
+| RecIt-Worker    | 1.4.0   |
+| RecIt-Console   | 1.4.0   |
+
+### Fixed
+
+- Now invalid EC2 instance will be released automatically, and new instance will be applied.
+
+## [1.4.1] - 2020.2
+
+| Module          | Version |
+| --------------- | ------- |
+| RecIt-Scheduler | 1.4.1   |
+| RecIt-Worker    | 1.4.0   |
+| RecIt-Console   | 1.4.0   |
+
+## [1.4.0] - 2020.2
+
+| Module          | Version |
+| --------------- | ------- |
+| RecIt-Scheduler | 1.4.0   |
+| RecIt-Worker    | 1.4.0   |
+| RecIt-Console   | 1.4.0   |
+
+### Fixed
+
+- Handle EC2 Instance application failure.
+
 ## [1.3.0] - Unreleased
 
 | Module          | Version |
