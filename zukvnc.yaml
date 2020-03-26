@@ -138,7 +138,7 @@ paths:
         - task
       summary: '创建新任务'
       x-code-samples:
-        lang: Java
+      - lang: Java
         source: |
           ZukVncClient client = ZukVncClient.create("your_username", "your_password");
           Long id = client.createTask(new CreateTaskRequest("https://www.youtube.com/watch?v=TjAa0wOe5k4")).getDisplay();
@@ -187,14 +187,11 @@ paths:
         - task
       summary: '列出所有任务'
       x-code-samples:
-        lang: Java
+      - lang: Java
         source: |
           ZukVncClient client = ZukVncClient.create("your_username", "your_password");
           QueryTasksResponse response = client.queryTasks(new QueryTasksRequest(30, 1, null, true));
-          System.out.println("Total tasks count: " + response.getTotalCount());
-          for (VncTask task : response.getData()) {
-            // Retrieve infomation from task
-          }
+          System.out.println("Total tasks: " + response);
       parameters:
         - name: pageSize
           in: query
