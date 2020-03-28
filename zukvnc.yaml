@@ -141,7 +141,7 @@ paths:
       - lang: Java
         source: |
           ZukVncClient client = ZukVncClient.create("your_username", "your_password");
-          Long id = client.createTask(new CreateTaskRequest("https://www.youtube.com/watch?v=TjAa0wOe5k4")).getDisplay();
+          Long id = client.createTask(new CreateTaskRequest("https://xxxx")).getDisplay();
           System.out.println("Task id: " + id);
       requestBody:
         content:
@@ -276,6 +276,11 @@ paths:
       tags:
         - task
       summary: '停止任务'
+      x-code-samples:
+      - lang: Java
+        source: |
+          // Create a task and get id.
+          client.stopTask(id);
       parameters:
         - name: display
           in: path
@@ -296,6 +301,12 @@ paths:
       tags:
         - task
       summary: '开始录制'
+      x-code-samples:
+      - lang: Java
+        source: |
+          // Create a task here.
+          // Ensure you receive the task started event before calling startRecording.
+          client.startRecording(new StartRecordingRequest(id, "record_name"));
       requestBody:
         content:
           application/json:
@@ -352,6 +363,12 @@ paths:
       tags:
         - task
       summary: '停止录制'
+      x-code-samples:
+      - lang: Java
+        source: |
+          // Create a task and start record here.
+          // Ensure you receive the record started event before calling stopRecording.
+          client.stopRecording(new StopRecordingRequest(id));
       parameters:
         - name: display
           in: path
@@ -372,6 +389,12 @@ paths:
       tags:
         - task
       summary: '开始推流'
+      x-code-samples:
+      - lang: Java
+        source: |
+          // Create a task here.
+          // Ensure you receive the task started event before calling startPushing.
+          client.startPushing(new StartPushingRequest(id, List.of("rtmp://xxxx")));
       requestBody:
         content:
           application/json:
@@ -414,17 +437,18 @@ paths:
       tags:
         - task
       summary: '停止推流'
+      x-code-samples:
+      - lang: Java
+        source: |
+          // Create a task and start pushing here.
+          // Ensure you receive the push started event before calling stopPushing.
+          client.stopRecording(new StopRecordingRequest(id));
       parameters:
         - name: display
           in: path
           required: true
           schema:
             type: string
-        - name: rtmpId
-          in: path
-          required: true
-          schema:
-            type: integer
       responses:
         '204':
           description: 停止推流成功
@@ -501,6 +525,11 @@ paths:
       tags:
         - stopped-task
       summary: '生成录像地址'
+      x-code-samples:
+      - lang: Java
+        source: |
+          // Create a task, record and stop task here.
+          client.generateRecordUrl(new GenerateUrlRequest(id, "record_name", 1 * 24 * 3600));
       requestBody:
         content:
           application/json:
